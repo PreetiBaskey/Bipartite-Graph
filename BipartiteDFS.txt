@@ -1,0 +1,55 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+const int V = 4;
+
+bool DFS(vector<int> graph[], vector<int> &visited, int initial_node, int initial_color) {
+    visited[initial_node] = initial_color;
+    cout<<"Processed node is :- "<<initial_node<<endl;
+    for(int neighbour: graph[initial_node]) {
+        if(visited[neighbour] == -1) {
+            if(DFS(graph, visited, neighbour, !initial_color) == false)
+                return false;
+        }
+        else if(visited[neighbour] == visited[initial_node]) {
+            return false;
+        }
+    }
+    return true;
+}
+
+void addEdge(vector<int> graph[], int source, int destination) {
+    graph[source].push_back(destination);
+    graph[destination].push_back(source);
+}
+
+int main() {
+    
+    vector<int> graph[V];
+    
+    // addEdge(graph, 1, 2);
+    // addEdge(graph, 2, 3);
+    // addEdge(graph, 3, 4);
+    // addEdge(graph, 4, 7);
+    // addEdge(graph, 7, 8);
+    // addEdge(graph, 2, 6);
+    // addEdge(graph, 6, 5);
+    // addEdge(graph, 5, 4);
+    
+    addEdge(graph, 0, 1);
+    addEdge(graph, 0, 2);
+    addEdge(graph, 0, 3);
+    
+    vector<int> visited(V, -1);
+    int initial_node = 0;
+    int initial_color = 0;
+    
+    if(DFS(graph, visited, initial_node, initial_color)) {
+        cout<<"Graph is bipartite !!";
+    }
+    else {
+        cout<<"Graph is not bipartite !!";
+    }
+    
+    return 0;
+}
